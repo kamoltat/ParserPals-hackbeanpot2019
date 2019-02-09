@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Music Rating</title>
+</head>
+
+<body>
+<form method="post" enctype="multipart/form-data" action="/upload">
+{% if items %}
+<ul>
+  {% for item in items %}
+                 <input type="radio" name="selectPlaylist" required='true' value="{{item[0]}}"/> {{item[1]}}<br />
+    {% endfor %}
+</ul>
+    <input type="submit" value="Go!" />
+{% endif %}
+
+</form>
+</body>
+</html>
