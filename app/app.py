@@ -3,6 +3,7 @@ import sys
 import os
 import json
 import webbrowser
+import numpy
 import spotipy
 import spotipy.util as util
 import indicoio
@@ -31,6 +32,7 @@ username = 'kamoltat'
 
 def songScore(sentiments, popularity, searchNum):
     #print(len(sentiments))
+
     score = (sum(sentiments)/searchNum)
     if popularity > 85:
         if score > 0.2:
@@ -88,14 +90,12 @@ def libraryScore(songList):
     #print(sentiment)
 
     scores = []
-
     # Extracts the proper range of sentiments from the crazy big list
     for i in range(len(songList)):
         i_range = sentiment[(i*SEARCH_NUM):(i*SEARCH_NUM)+(SEARCH_NUM)]
         scores += [(songList[i], songScore(i_range, songList[i][3], SEARCH_NUM))]
-
     # Return Structure: [(("<Song Name>", "<Artist Name>", "<Album Name>", <Popularity Score>), <Final Song Score>)]
-    return(scores)
+    return scores
 
 def get_spotify_token():
     token = util.prompt_for_user_token(username, scope, client_id, client_secret, redirect_uri)
@@ -117,7 +117,7 @@ def home():
             playlists = sp.next(playlists)
         else:
             playlists = None
-
+    print(list1)
     return render_template('hello.html',title="Music Rating",items=list1,dis_name=displayName)
 
 
@@ -140,14 +140,17 @@ def generate_all_songs(tracks):
 
 @app.route('/result',methods = ['POST', 'GET'])
 def result():
-    mylist = request.form['selectPlaylist']
+    mylist = request.form.get('selectPlaylist')
     sp = get_spotify_token()
     playId=mylist.split(':')[-1].split("'")[0]
     tracks=sp.user_playlist_tracks(username,playlist_id=playId)
     search_and_popu = generate_all_songs(tracks)
-    print(libraryScore(search_and_popu))
+    score_list = libraryScore(search_and_popu)
+    mean_tot=numpy.mean([score_list[i][1] for i in range(len(score_list))])*100
+    mean_pop = numpy.mean([score_list[i][0][3] for i in range(len(score_list))])
     # print(json.dumps(tracks, sort_keys=True,indent=4))
-    return render_template('result.html',avg_score=search_and_popu)
+
+    return render_template('result.html',avg_tot=mean_tot,avg_pop=mean_pop)
 
 
 @app.route('/drop_down',methods=['POST', 'GET'])

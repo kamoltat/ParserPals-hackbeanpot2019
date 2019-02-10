@@ -64,7 +64,7 @@ def libraryScore(songList):
     for i in range(len(songList)):
         n = 0
         #print(songcatenate(songList[i]))
-        for url in search(songcatenate(songList[i]) + ' review', stop=10):
+        for url in search(songcatenate(songList[i]) + ' review', stop=1):
             n += 1
             if n <= SEARCH_NUM:
                 tempUrls += [url]

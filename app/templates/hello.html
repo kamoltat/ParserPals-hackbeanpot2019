@@ -4,7 +4,8 @@
 {% extends "bootstrap/base.html" %}
 {% block title %}Music Rating{% endblock %}
 {% block content %}
-
+{#    <%= image_tag "logo.jpg", alt: 'logo', %>#}
+    <img src="{{url_for('static', filename='logo.jpg')}}" class="img-fluid" alt="Logo"/>
 {% if dis_name %}
     <div class="jumbotron jumbotron-fluid">
   <div class="container">
