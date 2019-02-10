@@ -1,21 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Music Rating</title>
-</head>
 
-<body>
-<form method="post" enctype="multipart/form-data" action="/upload">
-{% if items %}
-<ul>
-  {% for item in items %}
-                 <input type="radio" name="selectPlaylist" required='true' value="{{item[0]}}"/> {{item[1]}}<br />
-    {% endfor %}
-</ul>
-    <input type="submit" value="Go!" />
+{% extends "bootstrap/base.html" %}
+{% block title %}Music Rating{% endblock %}
+{% block content %}
+
+{% if dis_name %}
+    <div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">{{ dis_name}}</h1>
+    <p class="lead">Please select your favorite playlist that has at least 10 songs</p>
+  </div>
+    </div>
 {% endif %}
 
+<form method="post" enctype="multipart/form-data" action="/result">
+{# <div class="btn-group-toggle" data-toggle="buttons">#}
+{% if items %}
+{#<ul>#}
+  {% for item in items %}
+         <button type="submit" class="btn btn-dark btn-lg btn-block" name="selectPlaylist" value={{item}}>{{item[1]}}</button>
+{#            <input type="hidden" name="selectPlaylist" value={{item}}/>#}
+
+
+    {% endfor %}
+{#</ul>#}
+{% endif %}
+{#  </div>#}
 </form>
-</body>
+
+
+{% endblock %}
 </html>
