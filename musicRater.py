@@ -46,13 +46,13 @@ def libraryScore(songList):
 
     # SEARCH_NUM changes to fit the number of songs inputted, to avoid overwhelming Indico
     SEARCH_NUM = 10
-    if len(songList) > 1000:
+    if len(songList) > 100:
         SEARCH_NUM = 1
-    elif len(songList) > 500:
+    elif len(songList) > 50:
         SEARCH_NUM = 2
-    elif len(songList) > 300:
+    elif len(songList) > 30:
         SEARCH_NUM = 3
-    elif len(songList) > 200:
+    elif len(songList) > 20:
         SEARCH_NUM = 5
 
 
@@ -62,12 +62,9 @@ def libraryScore(songList):
 
     # Google API can only search for URLS in increments of 10, so SEARCH_NUM limits the amount
     for i in range(len(songList)):
-        n = 0
         #print(songcatenate(songList[i]))
-        for url in search(songcatenate(songList[i]) + ' review', stop=1):
-            n += 1
-            if n <= SEARCH_NUM:
-                tempUrls += [url]
+        for url in search(songcatenate(songList[i]) + ' review', num = SEARCH_NUM, stop=SEARCH_NUM):
+            tempUrls += [url]
         bar.next()
     bar.finish()
 
