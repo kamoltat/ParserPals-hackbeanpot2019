@@ -73,12 +73,9 @@ def libraryScore(songList):
 
     # Google API can only search for URLS in increments of 10, so SEARCH_NUM limits the amount
     for i in range(len(songList)):
-        n = 0
         #print(songcatenate(songList[i]))
-        for url in search(songcatenate(songList[i]) + ' review', stop=SEARCH_NUM):
-            n += 1
-            if n <= SEARCH_NUM:
-                tempUrls += [url]
+        for url in search(songcatenate(songList[i]) + ' review', num = SEARCH_NUM, stop=SEARCH_NUM):
+            tempUrls += [url]
         bar.next()
     bar.finish()
 
